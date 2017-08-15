@@ -136,7 +136,7 @@ namespace utf8
                     uint32_t trail_surrogate = internal::mask16(*start++);
                     cp = (cp << 10) + trail_surrogate + internal::SURROGATE_OFFSET;
                 }
-                result = append(cp, result);
+                result = utf8::unchecked::append(cp, result);
             }
             return result;         
         }
@@ -145,7 +145,7 @@ namespace utf8
         u16bit_iterator utf8to16 (octet_iterator start, octet_iterator end, u16bit_iterator result)
         {
             while (start != end) {
-                uint32_t cp = next(start);
+                uint32_t cp = utf8::unchecked::next(start);
                 if (cp > 0xffff) { //make a surrogate pair
                     *result++ = static_cast<uint16_t>((cp >> 10)   + internal::LEAD_OFFSET);
                     *result++ = static_cast<uint16_t>((cp & 0x3ff) + internal::TRAIL_SURROGATE_MIN);
